@@ -89,6 +89,6 @@ process extract_reads {
 
   script:
     """
-    python extract-reads.py ${primer} ${reads} ${samples} ${library}
+    extract-reads.py ${primer} ${reads} ${samples} ${library}
     """
 }
