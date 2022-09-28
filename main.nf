@@ -56,7 +56,6 @@ workflow {
 }
 
 process run_mle {
-  debug true
   publishDir "results/", mode: 'copy'
   conda 'bioconda::mageck==0.5.9'
 
@@ -76,6 +75,7 @@ process run_mle {
 }
 
 process extract_reads {
+  publishDir "results/", mode: 'copy'
   conda 'pandas==1.4.2 python==3.10.4'
 
   input:
