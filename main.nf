@@ -55,6 +55,24 @@ workflow {
   run_mle(extract_reads.out, ch_matrices)
 }
 
+process extract_reads {
+  conda 'pandas==1.4.2 python==3.10.4'
+
+  input:
+    val primer
+    path reads, stageAs: 'reads.fastq.gz'
+    path samples, stageAs: 'samples.csv'
+    path library, stageAs: 'library.csv'
+
+  output:
+    path 'count-*-i.f.csv'
+
+  script:
+    """
+    extract-reads.py ${primer} ${reads} ${samples} ${library}
+    """
+}
+
 process run_mle {
   debug true
   publishDir "results/", mode: 'copy'
@@ -72,23 +90,5 @@ process run_mle {
     def cfile = count_files.findAll( { it.simpleName.contains(name) } ).first()
     """
     mageck mle -k ${cfile} -d ${matrix} -n mle_${name}
-    """
-}
-
-process extract_reads {
-  conda 'pandas==1.4.2 python==3.10.4'
-
-  input:
-    val primer
-    path reads, stageAs: 'reads.fastq.gz'
-    path samples, stageAs: 'samples.csv'
-    path library, stageAs: 'library.csv'
-
-  output:
-    path 'count-*-i.f.csv'
-
-  script:
-    """
-    extract-reads.py ${primer} ${reads} ${samples} ${library}
     """
 }
