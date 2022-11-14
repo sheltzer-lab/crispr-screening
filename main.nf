@@ -57,7 +57,7 @@ workflow {
 
 process extract_reads {
   publishDir "results/", mode: 'copy'
-  conda 'pandas==1.4.2 python==3.10.4'
+  conda 'pandas=1.4.2 python=3.10.4'
 
   input:
     val primer
